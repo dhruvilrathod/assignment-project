@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { AngularFirestoreCollection } from '@angular/fire/compat/firestore';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { of } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -49,14 +48,12 @@ export class AppComponent implements OnInit {
             Object.assign(obj, { userid: doc.id });
             this.data.push(obj);
             this.userids.push(doc.id);
-            console.log(this.data);
             this.loading = false;
             this.nodata = false;
           }
           );
         }
       })
-    console.log(this.data);
   }
 
   formBuilderFunction() {
@@ -94,10 +91,8 @@ export class AppComponent implements OnInit {
 
   addRole(e: any) {
     console.log('add role function called');
-    console.log(e.value.toString());
     var add = e.value;
     this.rolesAdded.push(add);
-    console.log(this.rolesAdded);
     this.addUserForm.get('roles')?.setValue('');
   }
 
