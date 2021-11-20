@@ -1,0 +1,101 @@
+<div *ngIf="loading">
+    <div class="d-flex justify-content-center align-items-center" style="height: 100vh; width: 100vw;">
+        <div class="spinner-border text-primary" role="status" style="border-width: 0.5vw; height: 10vw; width: 10vw;">
+        </div>
+    </div>
+</div>
+<nav *ngIf="!loading" class="navbar navbar-dark bg-dark" style="height: 10vh;">
+    <span class="navbar-brand mb-0 h1 mx-4 text-warning">Assignment Project</span>
+    <button class="btn btn-dark btn border-light mx-2" (click)="addFormVisible = true">Add New User</button>
+</nav>
+<div *ngIf="!loading" style="background-color:sandybrown; height: 90vh; overflow: scroll;">
+    <div class="d-flex justify-content-center" *ngIf="nodata">
+        <div class="align-items-center mt-4">
+            <h1>No data available.Please add some users.</h1>
+        </div>
+    </div>
+    <div class="d-flex justify-content-center" *ngIf="addFormVisible">
+        <div class="align-items-center mt-4">
+            <div style="width: 60vw; background-color: lightgoldenrodyellow; box-shadow: 1px 1px 10px black;"
+                class="rounded">
+                <div class="container py-2">
+                    <div class="row">
+                        <div class="col-11">
+                            <h3 class="my-1">Add a new user</h3>
+                        </div>
+                        <div class="col-1">
+                            <button class="btn btn-dark btn-lg rounded" (click)="addFormVisible = false"><span
+                                    aria-hidden="true">&times;</span></button>
+                        </div>
+                    </div>
+                    <form [formGroup]="addUserForm" (ngSubmit)='addNewUserFunction(addUserForm)'>
+                        <div class="form-group">
+                            <label>Name:</label> <input formControlName="name" type="text" class="form-control">
+                        </div>
+                        <br>
+                        <div class="form-group">
+                            <label>Email:</label> <input formControlName="mail" type="email" class="form-control">
+                        </div><br>
+                        <div class="form-group">
+                            <label>Roles:</label> <input formControlName="roles" type="text" class="form-control">
+                            <button type="button" class="btn btn-outline-dark my-1"
+                                (click)="addRole(addUserForm.get('roles'))">Add Role</button>
+                            <div *ngFor="let r of rolesAdded, let i = index">
+                                <button class="btn-dark rounded mb-1" (click)="removeRole(i)">-</button> {{i+1}}. {{r}}
+                            </div>
+                        </div><br>
+                        <div class="form-group">
+                            <label>Disabled:</label>
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="radio" id="flexRadioDefault2" value="true"
+                                        formControlName="disabled">
+                                    True
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="radio" id="flexRadioDefault1" value="false"
+                                        formControlName="disabled">
+                                    False
+                                </label>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="form-group">
+                            <button class="btn btn-primary mx-2" type="submit">Add</button>
+                            <button class="btn btn-outline-dark" (click)="addFormVisible = false">Cancel</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <div *ngFor="let user of data" class="d-flex justify-content-center">
+        <div class="align-items-center">
+            <div style="width: 60vw; background-color: lightgoldenrodyellow; box-shadow: 1px 1px 10px black;"
+                class="my-3 rounded">
+                <div class="container py-2">
+                    <h4>User ID: {{user.userid}}</h4>
+                    Name: {{user.name}}<br>
+                    Mail: {{user.mail}}<br>
+                    Roles: <span *ngFor=" let r of user.roles, let i = index">{{r}}<span
+                            *ngIf="i < (user.roles.length-1)">, </span></span>
+                    <br>
+                    Disabled: {{user.disabled}}
+                    <hr>
+                    Update Disabled Value: <button class="btn btn-outline-dark"
+                        (click)="updateDisabledValue(user.userid, user.disabled)">
+                        Update to <span *ngIf="user.disabled == true">False</span> <span
+                            *ngIf="user.disabled == false">True</span>
+                    </button>
+                    <hr>
+                    <button class="btn btn-danger" (click)="deleteUser(user.userid)">
+                        Delete
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
