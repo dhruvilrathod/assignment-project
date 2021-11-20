@@ -78,8 +78,6 @@ export class AppComponent implements OnInit {
     this.addUserForm.reset();
     this.rolesAdded = [];
     var userid = 'user' + (this.userids.length + 1);
-    console.log(this.userids.length);
-    console.log(userid);
     this.fs.collection('users').doc(userid).set({
       name: this.newUserData.name,
       mail: this.newUserData.mail,
