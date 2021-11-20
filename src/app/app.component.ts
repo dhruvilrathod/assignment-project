@@ -110,7 +110,6 @@ export class AppComponent implements OnInit {
     this.fs.collection('users').doc(id).update({ disabled: !val }).then(a => {
       this.getDataFromFireStore();
     })
-    // console.log(change);    
   }
 
   deleteUser(id: any){
