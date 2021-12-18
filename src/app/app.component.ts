@@ -36,24 +36,24 @@ export class AppComponent implements OnInit {
     this.loading = true;
     this.data = [];
     this.userids = [];
-    this.fs.collection('users').get()
-      .subscribe((snapshot: any) => {
-        if (snapshot.empty === true) {
-          this.nodata = true;
+    this.fs.collection('users').valueChanges().subscribe((snapshot: any) => {
+      console.log(snapshot);
+      if (snapshot.empty === true) {
+        this.nodata = true;
+        this.loading = false;
+      }
+      else {
+        snapshot.map((doc: any) => {
+          var obj = doc;
+          Object.assign(obj, { userid: doc.id });
+          this.data.push(obj);
+          this.userids.push(doc.id);
           this.loading = false;
+          this.nodata = false;
         }
-        else {
-          snapshot.forEach((doc: any) => {
-            var obj = doc.data();
-            Object.assign(obj, { userid: doc.id });
-            this.data.push(obj);
-            this.userids.push(doc.id);
-            this.loading = false;
-            this.nodata = false;
-          }
-          );
-        }
-      })
+        );
+      }
+    })
   }
 
   formBuilderFunction() {
@@ -105,7 +105,7 @@ export class AppComponent implements OnInit {
     })
   }
 
-  deleteUser(id: any){
+  deleteUser(id: any) {
     this.fs.collection('users').doc(id).delete();
     this.getDataFromFireStore();
   }
